@@ -1,0 +1,2 @@
+EasyGo - Taxi Booking App
+Developed a taxi booking app that allows users to easily book rides, track drivers in real-time, and manage ride history. Integrated a user-friendly interface for seamless booking, payment processing, and GPS tracking of drivers. The backend was built to handle ride requests efficiently and provide real-time updates to users, ensuring a smooth and reliable taxi service experience.
