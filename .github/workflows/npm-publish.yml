@@ -1,0 +1,23 @@
+name: Node.js CI/CD
+
+on:
+  push:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: self-hosted
+    strategy:
+      matrix:
+        node-version: [21.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - run: echo -e "DB_URL = ${{ secrets.DB_URL }}\nPORT = ${{ secrets.PORT }}\nEXPIRES = ${{ secrets.EXPIRES }}\nTWILIO_ACCOUNT_SID = ${{ secrets.TWILIO_ACCOUNT_SID }}\nTWILIO_AUTH_TOKEN = ${{ secrets.TWILIO_AUTH_TOKEN }}\nTWILIO_SERVICE_SID = ${{ secrets.TWILIO_SERVICE_SID }}\nDISTANCE_MATRIX_KEY = ${{ secrets.DISTANCE_MATRIX_KEY }}\nMAIL_PASS = ${{ secrets.MAIL_PASS }}\nAWS_ACCESS_KEY_ID=${{secrets.AWS_ACCESS_KEY_ID}}\nAWS_ACCESS_KEY_SECRET=${{secrets.AWS_ACCESS_KEY_SECRET}}\nAWS_BUCKET_NAME=${{secrets.AWS_BUCKET_NAME}}\nAWS_REGION=${{secrets.AWS_REGION}}\nSTRIPE_API_KEY=${{secrets.STRIPE_API_KEY}}\nSTRIPE_SECRECT=${{secrets.STRIPE_SECRECT}}\nLEVEL=${{secrets.LEVEL}}\nJWT_SECRET=${{secrets.JWT_SECRET}}" >> .env
+    - run: npm ci
+    - run: pm2 restart easygo
